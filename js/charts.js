@@ -919,7 +919,8 @@ const Charts = {
     const priceH = hasSubpanel ? Math.floor(H * 0.62) : H;
     const subH   = hasSubpanel ? H - priceH : 0;
 
-    const pPad = { top: 8, right: 10, bottom: hasSubpanel ? 4 : 18, left: 40 };
+    const hasLabels = overlayLines.some(l => l.label);
+    const pPad = { top: 8, right: hasLabels ? 52 : 10, bottom: hasSubpanel ? 4 : 18, left: 40 };
     const pCW  = W - pPad.left - pPad.right;
     const pCH  = priceH - pPad.top - pPad.bottom;
 
@@ -1016,8 +1017,8 @@ const Charts = {
       if (line.label) {
         const li = line.values.reduce((best, v, i) => v !== null ? i : best, -1);
         if (li >= 0) {
-          ctx.fillStyle = line.color; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'left';
-          ctx.fillText(line.label, toX(li) + 3, toY(line.values[li]) - 3);
+          ctx.fillStyle = line.color; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'right';
+          ctx.fillText(line.label, W - 4, toY(line.values[li]) + 3);
         }
       }
     });

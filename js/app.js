@@ -9,16 +9,30 @@ const App = {
     this.checkSRRequired();
     this.render('dashboard');
 
-    // Auto-apply theme every minute (handles 6am/6pm crossover)
-    setInterval(() => this.applyTheme(), 60 * 1000);
+    // Auto-apply theme every minute (handles 6am/6pm crossover); clear manual override when auto matches it
+    setInterval(() => {
+      const h = new Date().getHours();
+      const auto = (h >= 6 && h < 18) ? 'light' : 'dark';
+      if (this._themeOverride === auto) this._themeOverride = undefined;
+      this.applyTheme();
+    }, 60 * 1000);
+
+    document.getElementById('theme-indicator').addEventListener('click', () => this.toggleTheme());
   },
 
   applyTheme() {
     const h = new Date().getHours();
-    const theme = (h >= 6 && h < 18) ? 'light' : 'dark';
+    const auto = (h >= 6 && h < 18) ? 'light' : 'dark';
+    const theme = (this._themeOverride !== undefined) ? this._themeOverride : auto;
     document.documentElement.setAttribute('data-theme', theme);
     const indicator = document.getElementById('theme-indicator');
     if (indicator) indicator.textContent = theme === 'light' ? '☀️' : '🌙';
+  },
+
+  toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    this._themeOverride = (current === 'light') ? 'dark' : 'light';
+    this.applyTheme();
   },
 
   initProgress() {

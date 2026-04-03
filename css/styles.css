@@ -140,7 +140,7 @@ em { font-style: italic; }
 .header-nav a:hover { background: var(--surface-2); color: var(--text); }
 .header-nav a.active { background: var(--surface-3); color: var(--text); }
 
-#theme-indicator { font-size: 1.1rem; }
+#theme-indicator { font-size: 1.1rem; cursor: pointer; user-select: none; }
 
 .main-container {
   max-width: 960px;
